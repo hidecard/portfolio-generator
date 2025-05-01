@@ -1,4 +1,4 @@
-function TemplateSelector({ templates, selectedTemplate, setSelectedTemplate, customTheme, setCustomTheme }) {
+function TemplateSelector({ templates, selectedTemplate, setSelectedTemplate, customTheme, setCustomTheme, darkMode, setDarkMode }) {
   const handleCustomThemeChange = (e) => {
     const { name, value } = e.target;
     setCustomTheme({ ...customTheme, [name]: value });
@@ -178,8 +178,8 @@ function TemplateSelector({ templates, selectedTemplate, setSelectedTemplate, cu
         ))}
       </div>
 
-      {/* Live Chat Toggle */}
-      <div>
+      {/* Live Chat and Dark Mode Toggles */}
+      <div className="flex gap-4">
         <label className="flex items-center text-sm font-medium">
           <input
             type="checkbox"
@@ -188,6 +188,15 @@ function TemplateSelector({ templates, selectedTemplate, setSelectedTemplate, cu
             className="mr-2"
           />
           Enable Live Chat
+        </label>
+        <label className="flex items-center text-sm font-medium">
+          <input
+            type="checkbox"
+            checked={darkMode}
+            onChange={() => setDarkMode(!darkMode)}
+            className="mr-2"
+          />
+          Dark Mode
         </label>
       </div>
     </div>

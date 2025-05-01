@@ -46,7 +46,7 @@ function App() {
     bio: '',
     skills: [],
     newSkill: { name: '', icon: 'CheckCircleIcon' },
-    experience: '',
+    experiences: [],
     contact: '',
     profilePicture: '',
     socialMedia: { linkedin: '', github: '', twitter: '' },
@@ -67,6 +67,7 @@ function App() {
   });
   const [selectedTemplate, setSelectedTemplate] = useState(templates[0]);
   const [portfolioUrl, setPortfolioUrl] = useState(null);
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('darkMode') === 'true');
 
   // Load shared data from URL hash
   useEffect(() => {
@@ -80,6 +81,16 @@ function App() {
       }
     }
   }, []);
+
+  // Persist dark mode in localStorage
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode);
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   // Load Tawk.to script for live chat
   useEffect(() => {
@@ -104,7 +115,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className={`min-h-screen p-4 ${darkMode ? 'dark:bg-gray-900' : 'bg-gray-50'}`}>
       <div className="max-w-4xl mx-auto">
         <Header />
         <FormSection formData={formData} setFormData={setFormData} />
@@ -114,6 +125,8 @@ function App() {
           setSelectedTemplate={setSelectedTemplate}
           customTheme={customTheme}
           setCustomTheme={setCustomTheme}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
         />
         <button
           onClick={handleGenerate}
@@ -126,6 +139,7 @@ function App() {
             formData={formData}
             selectedTemplate={selectedTemplate}
             portfolioUrl={portfolioUrl}
+            darkMode={darkMode}
           />
         )}
       </div>

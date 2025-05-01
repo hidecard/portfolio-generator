@@ -48,6 +48,27 @@ function FormSection({ formData, setFormData }) {
     });
   };
 
+  const handleExperienceChange = (e, index) => {
+    const { name, value } = e.target;
+    const updatedExperiences = [...formData.experiences];
+    updatedExperiences[index] = { ...updatedExperiences[index], [name]: value };
+    setFormData({ ...formData, experiences: updatedExperiences });
+  };
+
+  const handleAddExperience = () => {
+    setFormData({
+      ...formData,
+      experiences: [...formData.experiences, { company: '', role: '', dates: '', description: '' }],
+    });
+  };
+
+  const handleRemoveExperience = (index) => {
+    setFormData({
+      ...formData,
+      experiences: formData.experiences.filter((_, i) => i !== index),
+    });
+  };
+
   const iconOptions = [
     'CheckCircleIcon',
     'StarIcon',
@@ -140,14 +161,57 @@ function FormSection({ formData, setFormData }) {
             </ul>
           )}
         </div>
-        <input
-          type="text"
-          name="experience"
-          placeholder="Experience (e.g., 5 years)"
-          value={formData.experience}
-          onChange={handleInputChange}
-          className="p-2 border rounded w-full"
-        />
+        <div className="col-span-2">
+          <h3 className="text-lg font-medium mb-2">Experience</h3>
+          {formData.experiences.map((exp, index) => (
+            <div key={index} className="mb-4 p-4 border rounded">
+              <input
+                type="text"
+                name="company"
+                placeholder="Company"
+                value={exp.company}
+                onChange={(e) => handleExperienceChange(e, index)}
+                className="p-2 border rounded w-full mb-2"
+              />
+              <input
+                type="text"
+                name="role"
+                placeholder="Role"
+                value={exp.role}
+                onChange={(e) => handleExperienceChange(e, index)}
+                className="p-2 border rounded w-full mb-2"
+              />
+              <input
+                type="text"
+                name="dates"
+                placeholder="Dates (e.g., Jan 2020 - Dec 2022)"
+                value={exp.dates}
+                onChange={(e) => handleExperienceChange(e, index)}
+                className="p-2 border rounded w-full mb-2"
+              />
+              <textarea
+                name="description"
+                placeholder="Description"
+                value={exp.description}
+                onChange={(e) => handleExperienceChange(e, index)}
+                className="p-2 border rounded w-full"
+                rows="3"
+              />
+              <button
+                onClick={() => handleRemoveExperience(index)}
+                className="mt-2 text-red-500 hover:text-red-700"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={handleAddExperience}
+            className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Add Experience
+          </button>
+        </div>
         <input
           type="text"
           name="contact"
