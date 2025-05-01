@@ -11,6 +11,15 @@ const templates = [
     bgColor: 'bg-gray-100',
     textColor: 'text-gray-800',
     accentColor: 'bg-blue-500',
+    fontFamily: 'Arial, sans-serif',
+    borderStyle: 'rounded',
+    icons: {
+      about: 'UserIcon',
+      experience: 'BriefcaseIcon',
+      skills: 'LightBulbIcon',
+      contact: 'EnvelopeIcon',
+    },
+    enableChat: false,
   },
   {
     id: 2,
@@ -18,6 +27,15 @@ const templates = [
     bgColor: 'bg-purple-100',
     textColor: 'text-purple-900',
     accentColor: 'bg-pink-500',
+    fontFamily: 'Roboto, sans-serif',
+    borderStyle: 'extra-rounded',
+    icons: {
+      about: 'StarIcon',
+      experience: 'BoltIcon',
+      skills: 'FireIcon',
+      contact: 'EnvelopeIcon',
+    },
+    enableChat: false,
   },
 ];
 
@@ -27,14 +45,25 @@ function App() {
     jobTitle: '',
     bio: '',
     skills: [],
-    newSkill: '',
+    newSkill: { name: '', icon: 'CheckCircleIcon' },
     experience: '',
     contact: '',
+    profilePicture: '',
+    socialMedia: { linkedin: '', github: '', twitter: '' },
   });
   const [customTheme, setCustomTheme] = useState({
     bgColor: '#f0f0f0',
     textColor: '#333333',
     accentColor: '#4a90e2',
+    fontFamily: 'Arial, sans-serif',
+    borderStyle: 'rounded',
+    icons: {
+      about: 'UserIcon',
+      experience: 'BriefcaseIcon',
+      skills: 'LightBulbIcon',
+      contact: 'EnvelopeIcon',
+    },
+    enableChat: false,
   });
   const [selectedTemplate, setSelectedTemplate] = useState(templates[0]);
   const [portfolioUrl, setPortfolioUrl] = useState(null);
@@ -51,6 +80,21 @@ function App() {
       }
     }
   }, []);
+
+  // Load Tawk.to script for live chat
+  useEffect(() => {
+    if (selectedTemplate.enableChat) {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://embed.tawk.to/YOUR_TAWKTO_PROPERTY_ID/default';
+      script.charset = 'UTF-8';
+      script.setAttribute('crossorigin', '*');
+      document.body.appendChild(script);
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [selectedTemplate.enableChat]);
 
   const handleGenerate = () => {
     const portfolioData = { ...formData, template: selectedTemplate };
